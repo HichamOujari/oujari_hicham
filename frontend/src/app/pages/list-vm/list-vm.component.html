@@ -1,0 +1,10 @@
+<h2>Liste des VMs :</h2>
+<ul>
+  <li class="" *ngFor="let item of listVM;">
+    <h4>Machine : {{item.name}}</h4>
+    <p>Adresse ip : {{item.ip}}</p>
+    <p>System d'exploitation : {{item.os}}</p>
+    <p>Etat : {{item.state}}</p>
+    <button (click)="setUpState(item.state,item.name)"  class="btn btn-primary {{item.state+''=='false'?'bg-success':'btn-danger'}}">{{item.state+''=='true'?'Arreter':'Demarrer'}}</button>
+  </li>
+</ul>

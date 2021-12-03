@@ -1,34 +1,42 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
-const UserSchema = new mongoose.Schema({
-    email: { type: String },
-    password: { type: String },
+const VmSchema = new mongoose.Schema({
+    name: { type: String },
+    ip: { type: String },
+    os: { type: String },
+    state: { type: String },
 })
 
-
-const User = mongoose.model("user", UserSchema);
+const VM = mongoose.model("vm", VmSchema);
 
 
 module.exports = {
-    async signup(email, password) {
-        const persone = new User({ email: email, password: password });
-        return await persone.save();
+
+
+    async getAllVm() {
+        const vms = await VM.find({ });
+        return vms;
     },
 
-    async existingEmail(email) {
-        const c = await User.countDocuments({ email: email });
+    async addVm({name,ip,os,state}) {
+        const vm = new VM({ name: name,ip: ip,os: os,state: state});
+        return await vm.save();
+    },
+
+    async existingVm({name}) {
+        const c = await VM.find({ name: name });
         return c;
     },
 
-    async signin(email, password) {
-        const c = await User.find({ email: email, password: password });
-        return c;
+    async getVmByIp({ip}) {
+        const machine = await VM.find({ ip: ip });
+        return machine;
     },
 
-    async deleteUser(id) {
-        const deleteu = await User.findByIdAndRemove(id).exec();
-        return deleteu;
+    async updateState({newState,name}) {
+        const m = VM.findOne({name:name})
+        const updatedVm= await VM.findOneAndUpdate(m,{state:newState});
+        return updatedVm;
     },
 }

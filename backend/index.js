@@ -7,7 +7,7 @@ var morgan = require('morgan')
 const path = require("path")
 
 
-const authRouter = require('./routers/auth')
+const vmRouter = require('./routers/vm')
 
 
 const port = process.env.PORT || 3001;
@@ -18,8 +18,8 @@ app.use(morgan('dev'))
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRouter)
-//app.use("/",express.static(path.join("angular")))
+app.use("/vm", vmRouter)
+app.use("/",express.static(path.join("angular")))
 
 mongoose.connect(db_hosted, {
     useNewUrlParser: true,
@@ -28,9 +28,9 @@ mongoose.connect(db_hosted, {
     useCreateIndex: true
 });
 
-app.get("/", (req, res) => {
-    res.send("Hello world!")
-    //res.sendFile(path.join(__dirname,"angular","index.html"))
+app.get("/*", (req, res) => {
+    //res.send("Hello world!")
+    res.sendFile(path.join(__dirname,"angular","index.html"))
 })
 
 app.listen(port, () => {
